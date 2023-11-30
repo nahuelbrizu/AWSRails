@@ -11,6 +11,14 @@ module Myapp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers' => 'Content-Type, X-Requested-With, X-Prototype-Version',
+      'Access-Control-Allow-Credentials' => 'true',
+      'Access-Control-Max-Age' => '1728000'
+    }
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
