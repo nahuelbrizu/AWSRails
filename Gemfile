@@ -9,9 +9,12 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
+
+gem "omniauth-rails_csrf_protection"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
-gem 'rack-cors'
+# Gemfile
+gem 'rack-cors', require: 'rack/cors'
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"

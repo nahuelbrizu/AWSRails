@@ -10,15 +10,13 @@ module Myapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
-    config.middleware.use Rack::Cors
 
-    config.action_dispatch.default_headers = {
-      'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
-      'Access-Control-Allow-Headers' => 'Content-Type, X-Requested-With, X-Prototype-Version',
-      'Access-Control-Allow-Credentials' => 'true',
-      'Access-Control-Max-Age' => '1728000'
-    }
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'http://localhost:3003'
+        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head], credentials: true
+      end
+    end
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -32,5 +30,6 @@ module Myapp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
   end
 end

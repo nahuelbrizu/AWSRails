@@ -1,48 +1,42 @@
-# frozen_string_literal: true
-
+# app/controllers/users/omniauth_callbacks_controller.rb
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def google_oauth2
-    # You need to implement the method below in your model (e.g. app/models/user.rb)
-    @user = User.from_omniauth(request.env['omniauth.auth'])
+  skip_before_action :verify_authenticity_token, only: :google_oauth2
 
-    if @user.persisted?
-      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
-      sign_in_and_redirect @user, event: :authentication
-    else
-      session['devise.google_data'] = request.env['omniauth.auth'].except('extra') # Removing extra as it can overflow some session stores
-      redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
+  def google_oauth2
+    Rails.logger.debug("Google OAuth Callback initiated")
+
+    if request.env['omniauth.error'] == 'access_denied'
+      Rails.logger.error("User denied access. Redirecting to sign-in...")
+      redirect_to new_user_session_path, alert: 'Access was denied.'
+      return
+    end
+
+    begin
+      @user = User.from_omniauth(request.env['omniauth.auth'])
+
+      if @user.persisted?
+        puts "User persisted. Redirecting..."
+        sign_in_and_redirect @user, event: :authentication
+        set_flash_message(:notice, :success, kind: 'Google') if is_navigational_format?
+      else
+        puts "User not persisted. Redirecting to sign-in..."
+        session['google_data'] = request.env['omniauth.auth'].except(:extra)
+        redirect_to new_user_session_path, alert: @user.errors.full_messages.join("\n")
+      end
+    rescue => e
+      Rails.logger.error("Error during Google OAuth authentication: #{e.message}")
+      redirect_to new_user_session_path, alert: 'An error occurred during authentication.'
     end
   end
 
-  def failure
-    redirect_to root_path
-  end
+  #def failure
+  #  Rails.logger.error("Authentication failure")
+
+  # redirect_to new_user_session_path
+  #  end
 
 
-  # You should configure your model like this:
-  # devise :omniauthable, omniauth_providers: [:twitter]
-
-  # You should also create an action method in this controller like this:
-  # def twitter
-  # end
-
-  # More info at:
-  # https://github.com/heartcombo/devise#omniauth
-
-  # GET|POST /resource/auth/twitter
-   def passthru
-     super
-   end
-
-  # GET|POST /users/auth/twitter/callback
-  # def failure
-  #   super
-  # end
-
-  # protected
-
-  # The path used when OmniAuth fails
-  # def after_omniauth_failure_path_for(scope)
-  #   super(scope)
-  # end
+  def passthru
+   render status: 404, plain: "Not found. Authentication passthru."
+ end
 end

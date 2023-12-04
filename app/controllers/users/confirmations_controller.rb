@@ -2,9 +2,9 @@
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
   # GET /resource/confirmation/new
-  # def new
-  #   super
-  # end
+   def new
+     super
+   end
 
   # POST /resource/confirmation
   # def create
@@ -12,9 +12,9 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # GET /resource/confirmation?confirmation_token=abcdef
-  # def show
-  #   super
-  # end
+   def show
+     super
+   end
 
   # protected
 

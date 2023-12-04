@@ -7,12 +7,12 @@ Rails.application.configure do
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
-config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000}
 #config AWS HOST HTTP/HTTPS?
-  config.hosts << "ec2-54-167-125-208.compute-1.amazonaws.com:3000"
   # Do not eager load code on boot.
   config.eager_load = false
-
+  config.hosts << "localhost"
+  config.hosts << "172.19.154.51"
   # Show full error reports.
   config.consider_all_requests_local = true
 
