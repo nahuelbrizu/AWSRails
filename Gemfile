@@ -15,7 +15,7 @@ gem "omniauth-rails_csrf_protection"
 gem "sprockets-rails"
 # Gemfile
 gem 'rack-cors', require: 'rack/cors'
-
+gem 'dotenv-rails', groups: [:development, :test]
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 

@@ -2,13 +2,19 @@
 
 Devise.setup do |config|
 
-  config.omniauth :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET']
+  config.omniauth :facebook, '1487864018644257', 'd32565357bdef6f00a67a54d1f8f31cf', callback_url: "http://localhost:3003/users/auth/facebook/callback"
 
   Rails.application.config.middleware.use OmniAuth::Builder do
-    provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'],
-             ENV['GOOGLE_CLIENT_SECRET'], {
-               request_method: :post,
-               redirect_uri: 'http://localhost:3003/users/auth/google_oauth2/callback'
+    OmniAuth.config.silence_get_warning = true
+
+    provider :google_oauth2, '772918967244-k93kvjnb41dfhnp477vo2hgmafvi29i1.apps.googleusercontent.com',
+             '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',
+             {
+               redirect_uri: 'http://localhost:3003/users/auth/google_oauth2/callback',
+               scope: 'email, profile, http://gdata.youtube.com',
+               prompt: 'select_account',
+               image_aspect_ratio: 'square',
+               image_size: 50
              }
   end
 

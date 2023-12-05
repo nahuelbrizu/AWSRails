@@ -10,11 +10,13 @@ module Myapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:3003'
-        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head], credentials: true
+        origins 'http://172.19.154.51:3000', 'http://localhost:3000'
+        resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
 

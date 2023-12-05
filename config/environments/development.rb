@@ -13,6 +13,7 @@ Rails.application.configure do
   config.eager_load = false
   config.hosts << "localhost"
   config.hosts << "172.19.154.51"
+  config.hosts << "http://172.19.154.51:3000"
   # Show full error reports.
   config.consider_all_requests_local = true
 
